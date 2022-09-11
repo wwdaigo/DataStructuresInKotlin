@@ -1,9 +1,7 @@
 import linkedlist.LinkedList
 import linkedlist.SinglyLinkedList
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNull
+import linkedlist.singlyLinkedListOf
+import kotlin.test.*
 
 class SinglyLinkedListTests {
 	@Test
@@ -203,28 +201,62 @@ class SinglyLinkedListTests {
 	}
 
 	@Test
-	fun `Reverse an empty list`() {
+	fun `Copy a linked list`() {
+		val list = singlyLinkedListOf(1, 2, 3, 4, 5)
+		val copy = list.copy() as SinglyLinkedList
 
+		assertEquals(list.size, copy.size)
+		assertEquals(list.toString(), copy.toString())
+		assertFalse { list.headNode === copy.headNode }
 	}
 
 	@Test
 	fun `Reverse an integer list`() {
+		val list = singlyLinkedListOf(1, 2, 3, 4)
+		list.reverse()
+		val expected = "4, 3, 2, 1"
 
+		assertEquals(expected, list.toString())
 	}
 
 	@Test
-	fun `Sort an empty list in place`() {
+	fun `Reverse an integer list returning a copy`() {
+		val list = singlyLinkedListOf(1, 2, 3, 4)
+		val rev = list.reversed() as SinglyLinkedList
+		val expected = "4, 3, 2, 1"
 
+		assertEquals(expected, rev.toString())
+		assertFalse { rev.headNode === list.headNode }
 	}
 
 	@Test
-	fun `Sort an integer list and return the sorted list`() {
+	fun `Sort an integer list`() {
+		val list = singlyLinkedListOf(4, 2, 1, 3)
+		list.sort()
 
+		val expected = singlyLinkedListOf(1, 2, 3, 4)
+
+		assertEquals(list.size, expected.size)
+		list.forEachIndexed { index, i ->
+			assertEquals(i, expected[index])
+		}
 	}
 
 	@Test
-	fun `Sort descending an empty list in place`() {
+	fun `Sort an integer list and return a copy`() {
+		val list = singlyLinkedListOf(4, 2, 1, 3)
+		val copy = list.sorted() as SinglyLinkedList
 
+		val expected = singlyLinkedListOf(1, 2, 3, 4)
+
+		assertEquals(copy.size, expected.size)
+		copy.forEachIndexed { index, i ->
+			assertEquals(i, expected[index])
+		}
+
+		var t = list.headNode
+		while (t?.value != 1) { t = t?.next }
+		assertFalse { t === copy.headNode }
 	}
 
 	@Test

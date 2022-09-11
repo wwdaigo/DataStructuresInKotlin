@@ -1,14 +1,11 @@
-import linkedlist.SinglyLinkedList
 import linkedlist.singlyLinkedListOf
 
 fun main() {
-	val singlyLinkedList = SinglyLinkedList<Int>()
-	repeat(5) { singlyLinkedList.addLast(it + 1) }
-	println(singlyLinkedList.removeLast())
-	println(singlyLinkedList.toString())
+	val list2 = singlyLinkedListOf(6, 7, 1, 3)
+	val so = list2.sorted()
+	val so2 = list2.sortedDescending()
 
-	val list2 = singlyLinkedListOf(1, 5, 6)
-
-	println(singlyLinkedList.headNode)
 	println(list2.toString())
+	println(so.toString())
+	println(so2.toString())
 }

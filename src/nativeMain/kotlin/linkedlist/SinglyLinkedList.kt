@@ -1,6 +1,6 @@
 package linkedlist
 
-class SinglyLinkedList<T> : LinkedList<T> {
+class SinglyLinkedList<T : Comparable<T>> : LinkedList<T> {
 	private var count = 0
 
 	private var head: Node<T>? = null
@@ -125,24 +125,107 @@ class SinglyLinkedList<T> : LinkedList<T> {
 		}
 	}
 
+	override fun copy(): LinkedList<T> {
+		val copy = SinglyLinkedList<T>()
+
+		forEach {
+			copy.addLast(it)
+		}
+
+		return copy
+	}
+
 	override fun reverse() {
-		TODO("Not yet implemented")
+		head = reversedList()
+	}
+
+	override fun reversed(): LinkedList<T> {
+		return copy().apply { reverse() }
+	}
+
+	private fun reversedList(): Node<T>? {
+		var prev: Node<T>? = null
+		var next: Node<T>?
+		var current = head
+
+		while (current != null) {
+			next = current.next
+			current.next = prev
+			prev = current
+			current = next
+		}
+
+		return prev
 	}
 
 	override fun sort() {
-		TODO("Not yet implemented")
+		head = mergeSort(head, Comparator { a, b -> when {
+			a == b -> 0
+			a < b -> 1
+			else -> -1
+		} })
 	}
 
 	override fun sorted(): LinkedList<T> {
-		TODO("Not yet implemented")
+		val copy = copy() as SinglyLinkedList
+		copy.sort()
+		return copy
 	}
 
 	override fun sortDescending() {
-		TODO("Not yet implemented")
+		head = mergeSort(head, Comparator { a, b -> when {
+			a == b -> 0
+			a > b -> 1
+			else -> -1
+		} })
 	}
 
 	override fun sortedDescending(): LinkedList<T> {
-		TODO("Not yet implemented")
+		val copy = copy() as SinglyLinkedList
+		copy.sortDescending()
+		return copy
+	}
+
+	private fun mergeSort(node: Node<T>?, comparator: Comparator<T>): Node<T>? {
+		if (node?.next == null) return node
+		var slow = node
+		var fast = node
+
+		while (fast?.next != null) {
+			slow = slow?.next
+			fast = fast.next?.next
+		}
+		var prevSlow = node
+		while (prevSlow?.next !== slow) { prevSlow = prevSlow?.next }
+		prevSlow?.next = null
+
+		val left = mergeSort(node, comparator)
+		val right = mergeSort(slow, comparator)
+
+		return merge(left, right, comparator)
+	}
+
+	private fun merge(left: Node<T>?, right: Node<T>?, comparator: Comparator<T>): Node<T>? {
+		if (head == null) return null
+		val dummy = singlyLinkedListOf(head!!.value).headNode ?: return null
+		var dummyTail: Node<T>? = dummy
+
+		var tLeft = left
+		var tRight = right
+
+		while (tLeft != null && tRight != null) {
+			if (comparator.compare(tLeft.value, tRight.value) == 1) {
+				dummyTail?.next = tLeft
+				tLeft = tLeft.next
+			} else {
+				dummyTail?.next = tRight
+				tRight = tRight.next
+			}
+			dummyTail = dummyTail?.next
+		}
+		dummyTail?.next = tRight ?: tLeft
+
+		return dummy.next
 	}
 
 	override fun toString(): String {
@@ -182,6 +265,6 @@ class SinglyLinkedList<T> : LinkedList<T> {
 	)
 }
 
-fun <T> singlyLinkedListOf(vararg items: T) = SinglyLinkedList<T>().apply {
+fun <T : Comparable<T>> singlyLinkedListOf(vararg items: T) = SinglyLinkedList<T>().apply {
 	items.forEach { addLast(it) }
 }
