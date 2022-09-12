@@ -1,11 +1,26 @@
+import linkedlist.DoublyLinkedList
 import linkedlist.singlyLinkedListOf
 
 fun main() {
-	val list2 = singlyLinkedListOf(6, 7, 1, 3)
-	val so = list2.sorted()
-	val so2 = list2.sortedDescending()
+	val doubly = DoublyLinkedList<Int>()
+	doubly.addFirst(1)
+	doubly.addFirst(3)
+	doubly.addLast(10)
 
-	println(list2.toString())
-	println(so.toString())
-	println(so2.toString())
+
+	val ll = singlyLinkedListOf(5, 3, 1, 5 , 6, 8)
+	val co = ll.copy()
+	println(co.sorted())
+/*
+	var t = doubly.headNode
+	while (t?.next != null) {
+		println(t.value)
+		t = t.next
+	}
+	while (t != null) {
+		println(t.value)
+		t = t.prev
+	}
+*/
 }
+

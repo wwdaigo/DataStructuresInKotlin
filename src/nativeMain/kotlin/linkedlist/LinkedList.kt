@@ -1,6 +1,6 @@
 package linkedlist
 
-interface LinkedList<T : Comparable<T>> : Iterable<T> {
+interface LinkedList<T> : Iterable<T> {
 	val size: Int
 	val peekFirst: T?
 	val peekLast: T?
@@ -15,15 +15,10 @@ interface LinkedList<T : Comparable<T>> : Iterable<T> {
 
 	fun clear()
 
+	fun contains(value: T): Int
 	operator fun get(index: Int): T?
-	fun copy(): LinkedList<T>
-	fun reverse()
-	fun reversed(): LinkedList<T>
 
-	fun sort()
-	fun sorted(): LinkedList<T>
-	fun sortDescending()
-	fun sortedDescending(): LinkedList<T>
+	fun reverse()
 
 	override fun toString(): String
 }

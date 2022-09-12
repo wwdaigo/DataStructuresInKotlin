@@ -1,6 +1,4 @@
-import linkedlist.LinkedList
-import linkedlist.SinglyLinkedList
-import linkedlist.singlyLinkedListOf
+import linkedlist.*
 import kotlin.test.*
 
 class SinglyLinkedListTests {
@@ -30,7 +28,7 @@ class SinglyLinkedListTests {
 		assertEquals(6, singlyLinkedList.size)
 		assertEquals('B', singlyLinkedList.peekFirst)
 		assertEquals('A', singlyLinkedList.peekLast)
-		assertEquals("B, A, N, A, N, A", singlyLinkedList.toString())
+		assertEquals("[B, A, N, A, N, A]", singlyLinkedList.toString())
 	}
 
 	@Test
@@ -203,7 +201,7 @@ class SinglyLinkedListTests {
 	@Test
 	fun `Copy a linked list`() {
 		val list = singlyLinkedListOf(1, 2, 3, 4, 5)
-		val copy = list.copy() as SinglyLinkedList
+		val copy = list.copy()
 
 		assertEquals(list.size, copy.size)
 		assertEquals(list.toString(), copy.toString())
@@ -211,56 +209,62 @@ class SinglyLinkedListTests {
 	}
 
 	@Test
+	fun `Try to find an item in an empty linked list`() {
+		val list = singlyLinkedListOf<Int>()
+		val pos = list.contains(5)
+
+		assertEquals(pos, -1)
+	}
+
+	@Test
+	fun `Try to find an existing item in a linked list`() {
+		val list = singlyLinkedListOf(1, 3, 5, 7)
+		val pos = list.contains(5)
+
+		assertEquals(pos, 2)
+	}
+
+	@Test
+	fun `Try to find a non-existing item in a linked list`() {
+		val list = singlyLinkedListOf(2, 4, 6, 8)
+		val pos = list.contains(5)
+
+		assertEquals(pos, -1)
+	}
+
+	@Test
+	fun `Try to find a repeated item in a linked list`() {
+		val list = singlyLinkedListOf(2, 4, 6, 8, 2, 4, 6, 8)
+		val pos = list.contains(6)
+
+		assertEquals(pos, 2)
+	}
+
+	@Test
 	fun `Reverse an integer list`() {
 		val list = singlyLinkedListOf(1, 2, 3, 4)
 		list.reverse()
-		val expected = "4, 3, 2, 1"
+		val expected = "[4, 3, 2, 1]"
 
 		assertEquals(expected, list.toString())
 	}
 
 	@Test
-	fun `Reverse an integer list returning a copy`() {
-		val list = singlyLinkedListOf(1, 2, 3, 4)
-		val rev = list.reversed() as SinglyLinkedList
-		val expected = "4, 3, 2, 1"
-
-		assertEquals(expected, rev.toString())
-		assertFalse { rev.headNode === list.headNode }
-	}
-
-	@Test
 	fun `Sort an integer list`() {
 		val list = singlyLinkedListOf(4, 2, 1, 3)
-		list.sort()
+		val sorted = list.sorted()
 
-		val expected = singlyLinkedListOf(1, 2, 3, 4)
-
-		assertEquals(list.size, expected.size)
-		list.forEachIndexed { index, i ->
-			assertEquals(i, expected[index])
-		}
-	}
-
-	@Test
-	fun `Sort an integer list and return a copy`() {
-		val list = singlyLinkedListOf(4, 2, 1, 3)
-		val copy = list.sorted() as SinglyLinkedList
-
-		val expected = singlyLinkedListOf(1, 2, 3, 4)
-
-		assertEquals(copy.size, expected.size)
-		copy.forEachIndexed { index, i ->
-			assertEquals(i, expected[index])
-		}
-
-		var t = list.headNode
-		while (t?.value != 1) { t = t?.next }
-		assertFalse { t === copy.headNode }
+		val expected = "[1, 2, 3, 4]"
+		assertEquals(expected, sorted.toString())
 	}
 
 	@Test
 	fun `Sort descending an integer list and return the sorted list`() {
+		val list = singlyLinkedListOf(4, 2, 1, 3)
+		val sorted = list.sortedDesc()
 
+		println(sorted.toString())
+		val expected = "[4, 3, 2, 1]"
+		assertEquals(expected, sorted.toString())
 	}
 }
